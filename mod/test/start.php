@@ -85,10 +85,11 @@ function test_params($group) {
 
 
 		foreach ($forums as $forum) {
+			// gcconnex.gc.ca/blog/view/guid/blog-name
 			$hyperlink = elgg_get_site_url()."gcforums/group/{$group_guid}/{$forum->guid}";
 
 			$content .= "<div class='gcforums-forum-container'>";
-			$content .= "	<div class='gcforums-forum'> <strong> <a href='{$hyperlink}'> {$forum->title} </a> </strong> </div>";
+			$content .= "	<div class='gcforums-forum'> <strong> <a href='{$forum->getURL()}'> {$forum->title} </a> </strong> </div>";
 			$content .= "	<div class='gcforums-forum-stats'> 000 </div>";
 			$content .= "	<div class='gcforums-forum-stats'> 000 </div>";
 			$content .= "	<div class='gcforums-forum-stats'> 000 </div>";
