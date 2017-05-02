@@ -4,7 +4,7 @@ elgg_register_event_handler('init','system','test_init');
 
 function test_init() {
 	elgg_register_plugin_hook_handler('register','menu:owner_block','test_owner_block_menu');
-	elgg_register_page_handler('test', 'test_page_handler');
+	elgg_register_page_handler('forums', 'test_page_handler');
 }
 
 
@@ -18,13 +18,15 @@ function test_owner_block_menu($hook, $type, $return, $params) {
 function test_page_handler($page) {
 
 	$page_type = $page[0];
+
+	error_log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>    {$page_type} /// {$page[1]}");
 	switch ($page_type) {
 
 		case 'edit':
 			break;
 
 		case 'view':
-			$params = test_params1();
+			$params = test_params1($page[1]);
 			break;
 
 		case 'group':
@@ -89,7 +91,7 @@ function test_params($group) {
 			$hyperlink = elgg_get_site_url()."gcforums/group/{$group_guid}/{$forum->guid}";
 
 			$content .= "<div class='gcforums-forum-container'>";
-			$content .= "	<div class='gcforums-forum'> <strong> <a href='{$forum->getURL()}'> {$forum->title} </a> </strong> </div>";
+			$content .= "	<div class='gcforums-forum'> <strong> <a href='http://192.168.1.50/gcconnex/forums/view/{$forum->getGUID()}'> {$forum->title} </a> </strong> </div>";
 			$content .= "	<div class='gcforums-forum-stats'> 000 </div>";
 			$content .= "	<div class='gcforums-forum-stats'> 000 </div>";
 			$content .= "	<div class='gcforums-forum-stats'> 000 </div>";
@@ -103,7 +105,6 @@ function test_params($group) {
 
 	$content .= "</div>";
 
-
 	return array(
 		'content' => $content,
 		'title' => "{$group->name}'s Forum",
@@ -113,7 +114,16 @@ function test_params($group) {
 }
 
 /// renders everything after the first forums (displays nested forums)
-function test_params1() {
+function test_params1($forum_guid) {
+	$breadcrumb_array = array();
+	$breadcrumb_array = assemble_nested_forums(array(), $forum_guid, $forum_guid);
+	$breadcrumb_array = array_reverse($breadcrumb_array);
+
+	foreach ($breadcrumb_array as $trail_id => $trail) {
+		elgg_push_breadcrumb($trail);
+	}
+
+
 	// forums will always remain as content within a group
 	elgg_set_page_owner_guid(334);
 	$return = array();
@@ -122,4 +132,24 @@ function test_params1() {
 	$return['content'] = "body of the content";
 
 	return $return;
+}
+
+
+/// recursively go through the nested forums to create the breadcrumb
+function assemble_nested_forums($breadcrumb, $forum_guid, $recurse_forum_guid) {
+
+	$entity = get_entity($recurse_forum_guid);
+
+	if ($entity instanceof ElggGroup) {
+		if ($entity->guid != $forum_guid) {	
+			$breadcrumb[$entity->getGUID()] = $entity->name;
+			return $breadcrumb;			
+		}
+
+	} else {
+
+		$breadcrumb[$entity->getGUID()] = $entity->title;	
+		return assemble_nested_forums($breadcrumb, $forum_guid, $entity->getContainerGUID());
+	}
+
 }
