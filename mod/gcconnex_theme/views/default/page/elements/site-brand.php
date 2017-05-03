@@ -27,7 +27,7 @@ if (elgg_is_active_plugin('gc_fedsearch_gsa') && ((!$gsa_usertest) && strcmp($gs
                 </div>
                 <div class="col-sm-3 col-sm-offset-6 hidden-xs">
                     <div class="dropdown">
-                        <a class="dropdown-toggle pull-right" data-toggle="dropdown">Dropdown Example
+                        <a class="dropdown-toggle pull-right" data-toggle="dropdown" href="#">Dropdown Example
                             <span class="caret"></span></a>
                             <ul class="dropdown-menu pull-right">
                                 <li>
