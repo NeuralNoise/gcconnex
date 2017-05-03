@@ -88,7 +88,7 @@ $body .= <<<__BODY
 		<!-- </div>-->
     	<div id="wb-bnr" class="container">
             $lang
-           
+            $wavyblue
 </div>
 $site_brand
 

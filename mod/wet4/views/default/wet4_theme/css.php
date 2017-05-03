@@ -10476,7 +10476,7 @@ html[lang='fr'].mediumview .fdbckpromo .accnt-prmry {
  */
 #wb-srch,
 .srchbox {
-  padding-top: 1em; }
+  padding-top: 0.37em; }
   #wb-srch input,
   #wb-srch button,
   .srchbox input,
@@ -10501,8 +10501,8 @@ html[lang='fr'].mediumview .fdbckpromo .accnt-prmry {
     vertical-align: middle; }
   #wb-srch input,
   .srchbox input {
-    background-color: #e0e0e0;
-    border-color: #e0e0e0;
+    background-color: #FFFFFF;
+    border-color: #FFFFFF;
     border-right: 0;
     border-style: solid;
     -webkit-box-shadow: none;

@@ -1443,10 +1443,12 @@ details.elgg-state-success:before {
     font-size: 1.6em;
     padding-top:5px;
     padding-left: 20px;
+    padding-right:21px;
     background-color: #055959;
     min-height: 45px;
     max-width: 165px;
    margin-left:-5px;
+    display:inline-block;
 }
 
 .app-name:before{
@@ -1464,6 +1466,10 @@ details.elgg-state-success:before {
     clear: both;
 }
 
+    .app-dropdown-holder{
+        margin-left:35px;
+        margin-top:10px;
+    }
 .tool-link{
     font-size:16px;
     padding:11px 0 0 20px;
