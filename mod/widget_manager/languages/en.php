@@ -2,6 +2,10 @@
 
 	$english = array(
 		
+
+		'widgets:twitter_widget:name' => "Twitter Widget",
+		'widgets:twitter_widget:type' => "Widget Type",
+		
 		// special access level
 		'LOGGED_OUT' => "Logged out users",
 		'access:admin_only' => "Administrators only",

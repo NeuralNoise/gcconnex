@@ -61,6 +61,11 @@ function widget_manager_widgets_init() {
 	elgg_register_widget_type("twitter_search", elgg_echo("widgets:twitter_search:name"), elgg_echo("widgets:twitter_search:description"), array("profile", "dashboard", "index", "groups"), true);
 	elgg_register_plugin_hook_handler("widget_settings", "twitter_search", "widget_manager_widgets_twitter_search_settings_save_hook");
 	
+	/// cyu - Twitter Widget (updated API)
+	elgg_register_widget_type("twitter_widget", elgg_echo("widgets:twitter_widget:name"), elgg_echo("widgets:twitter_search:description"), array("profile", "dashboard", "index", "groups"), true);
+	elgg_register_plugin_hook_handler("widget_settings", "twitter_widget", "widget_manager_widgets_twitter_widget_settings_save_hook");
+
+
 	// messages
 	if (elgg_is_active_plugin("messages")) {
 		elgg_register_widget_type("messages", elgg_echo("messages"), elgg_echo("widgets:messages:description"), array("dashboard", "index"), false);
@@ -125,6 +130,37 @@ function widget_manager_widgets_url_hook_handler($hook, $type, $return, $params)
 	}
 		
 	return $result;
+}
+
+/*
+ * strips several key elements for widget and saves them
+ * parameters: refer to function widget_manager_widgets_twitter_search_settings_save_hook
+ */
+function widget_manager_widgets_twitter_widget_settings_save_hook($hook, $type, $return, $params) {
+	if (empty($params) || !is_array($params))
+		return;
+	
+	$widget = elgg_extract("widget", $params);
+	$widget_type = elgg_extract('widget_type', get_input("params", array(), false));
+	$embed_code = elgg_extract("embed_code", get_input("params", array(), false)); 
+
+	if ($widget_type === 'Tweets') {
+		$matches = array();
+		$pattern = "/<blockquote class=\"twitter-tweet\">(.*)<\/blockquote>/";
+		preg_match($pattern, $embed_code, $matches);
+		$widget->embed_url = $matches[1];
+
+	} else {
+		$matches = array();
+		$pattern = "/href=[\"\']([\S]*)[\"\']{1}/";
+		preg_match($pattern, $embed_code, $matches);
+		$widget->embed_url = $matches[1];
+
+		$matches = array();
+		$pattern = "/>(.*)<\/a>{1}/";
+		preg_match($pattern, $embed_code, $matches);
+		$widget->embed_title = $matches[1];
+	}
 }
 
 /**
